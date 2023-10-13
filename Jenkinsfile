@@ -14,19 +14,15 @@ pipeline {
             }
         }
 
-        stage('Deploy in Staging Environment') {
+        stage('Create Tomcat Docker Image') {
             steps {
-                build job: 'Deploy_Application_Staging_Env'
-            }
-        }
+                //mention the command which need to run to create the image
+                sh 'docker build . -t tomcatsamplewebapp:${env.BUILD_ID}'
+                //execute this particular command at the current directory
+                // - t pour tag l'image (image name)
+                // version eto ataotsika ny build nomber
+                //mapiasa variable d'env disponible am jenkins
 
-        stage('Deploy in Prod Environment') {
-            steps {
-                //deploy manualy
-                timeout(time:5, unit:'DAYS') {
-                    input message: 'Approve PRODUCTION Deployment?'
-                }
-                build job: 'Deploy_Application_PROD_Env'
             }
         }
         
